@@ -4,7 +4,7 @@
   <form #formContacto="ngForm"
         (ngSubmit)="procesarFormulario(formContacto)">
 
-    <!-- NOMBRE -->
+    <!-- ===================== NOMBRE ===================== -->
     <div class="mb-3">
       <label class="form-label">Nombre</label>
       <input
@@ -15,32 +15,33 @@
         required
         minlength="3"
         maxlength="30"
-        #nombreCtrl="ngModel"
-        #nombre="ngModel"
         pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"
+        #nombreCtrl="ngModel"
         (input)="soloLetras($event)">
     </div>
 
-    <!-- ERRORES LONGITUD -->
     <div *ngIf="nombreCtrl.invalid && nombreCtrl.touched" class="text-danger">
+
       <small *ngIf="nombreCtrl.errors?.['required']">
         El nombre es obligatorio
       </small>
+
       <small *ngIf="nombreCtrl.errors?.['minlength']">
         El nombre debe tener al menos 3 caracteres
       </small>
+
       <small *ngIf="nombreCtrl.errors?.['maxlength']">
         El nombre no debe exceder 30 caracteres
       </small>
+
+      <small *ngIf="nombreCtrl.errors?.['pattern']">
+        El nombre solo debe contener letras
+      </small>
+
     </div>
 
-    <!-- ERROR SOLO LETRAS -->
-    <div class="text-danger mt-1"
-         *ngIf="nombre.invalid && nombre.touched">
-      El nombre solo debe contener letras.
-    </div>
 
-    <!-- CORREO -->
+    <!-- ===================== CORREO ===================== -->
     <div class="mb-3">
       <label class="form-label">Correo</label>
       <input
@@ -49,8 +50,32 @@
         name="correo"
         ngModel
         required
-        email>
+        email
+        minlength="10"
+        maxlength="30"
+        #correoCtrl="ngModel">
     </div>
+
+    <div *ngIf="correoCtrl.invalid && correoCtrl.touched" class="text-danger">
+
+      <small *ngIf="correoCtrl.errors?.['required']">
+        El correo es obligatorio
+      </small>
+
+      <small *ngIf="correoCtrl.errors?.['email']">
+        El formato del correo no es válido
+      </small>
+
+      <small *ngIf="correoCtrl.errors?.['minlength']">
+        El correo debe tener al menos 10 caracteres
+      </small>
+
+      <small *ngIf="correoCtrl.errors?.['maxlength']">
+        El correo no debe exceder 50 caracteres
+      </small>
+
+    </div>
+
 
     <button class="btn btn-primary" type="submit">
       Enviar
@@ -59,7 +84,8 @@
   </form>
 </div>
 
-<!-- MODAL -->
+
+<!-- ===================== MODAL ===================== -->
 <div class="modal fade" id="modalResultado" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
