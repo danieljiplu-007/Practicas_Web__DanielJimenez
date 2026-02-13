@@ -13,7 +13,7 @@
         name="nombre"
         ngModel
         required
-        minlength="3"
+        minlength="5"
         maxlength="30"
         pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"
         #nombreCtrl="ngModel"
@@ -27,7 +27,7 @@
       </small>
 
       <small *ngIf="nombreCtrl.errors?.['minlength']">
-        El nombre debe tener al menos 3 caracteres
+        El nombre debe tener al menos 5 caracteres
       </small>
 
       <small *ngIf="nombreCtrl.errors?.['maxlength']">
