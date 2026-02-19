@@ -1,0 +1,21 @@
+<h2>Cartelera Cultural</h2>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Título</th>
+      <th>Fecha</th>
+      <th>Lugar</th>
+      <th>Precio</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let evento of eventos">
+      <td>{{ evento.titulo }}</td>
+      <td>{{ evento.fecha }}</td>
+      <td>{{ evento.lugar }}</td>
+      <td>{{ evento.precio }}</td>
+    </tr>
+  </tbody>
+</table>
