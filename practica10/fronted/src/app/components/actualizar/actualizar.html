@@ -1,0 +1,108 @@
+<div class="container mt-5">
+
+  <div class="card shadow-lg p-4">
+
+    <h3 class="text-center text-warning mb-4">
+      ✏ Actualizar Videojuegos
+    </h3>
+
+    <table class="table table-hover table-striped align-middle">
+
+      <thead class="table-dark">
+        <tr>
+          <th>Nombre</th>
+          <th>Género</th>
+          <th>Precio</th>
+          <th>Imagen</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let game of games">
+          <td>{{game.nombre}}</td>
+          <td>{{game.genero}}</td>
+          <td>${{game.precio}}</td>
+          <td>
+            <img [src]="game.imagenUrl"
+                 style="width:60px; height:60px; object-fit:cover; border-radius:6px;">
+          </td>
+          <td>
+            <button
+              class="btn btn-outline-primary btn-sm"
+              (click)="selectGame(game)">
+              Actualizar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <!-- FORMULARIO DE EDICIÓN -->
+  <div *ngIf="selectedGame" class="card shadow-lg p-4 mt-4">
+
+    <h4 class="mb-3 text-primary">
+      Editando: {{selectedGame.nombre}}
+    </h4>
+
+    <form (ngSubmit)="updateGame()" #updateForm="ngForm">
+
+      <!-- Nombre -->
+      <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <input class="form-control"
+               [(ngModel)]="selectedGame.nombre"
+               name="nombre"
+               required>
+      </div>
+
+      <!-- Género -->
+      <div class="mb-3">
+        <label class="form-label">Género</label>
+        <input class="form-control"
+               [(ngModel)]="selectedGame.genero"
+               name="genero"
+               required>
+      </div>
+
+      <!-- Precio -->
+      <div class="mb-3">
+        <label class="form-label">Precio</label>
+        <input type="number"
+               class="form-control"
+               [(ngModel)]="selectedGame.precio"
+               name="precio"
+               required>
+      </div>
+
+      <!-- Imagen -->
+      <div class="mb-3">
+        <label class="form-label">URL Imagen</label>
+        <input class="form-control"
+               [(ngModel)]="selectedGame.imagenUrl"
+               name="imagenUrl">
+      </div>
+
+      <div class="d-flex justify-content-end mt-3">
+
+        <button class="btn btn-success me-2"
+                [disabled]="updateForm.invalid">
+          Guardar Cambios
+        </button>
+
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="cancelEdit()">
+          Cancelar
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

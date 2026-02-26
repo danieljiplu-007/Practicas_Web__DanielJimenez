@@ -1,0 +1,43 @@
+<div class="container mt-5">
+
+  <div class="card shadow-lg p-4">
+
+    <h3 class="text-center text-danger mb-4">
+      🗑 Eliminar Videojuegos
+    </h3>
+
+    <table class="table table-hover table-striped align-middle">
+
+      <thead class="table-dark">
+        <tr>
+          <th>Nombre</th>
+          <th>Género</th>
+          <th>Precio</th>
+          <th>Imagen</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let game of games">
+          <td>{{game.nombre}}</td>
+          <td>{{game.genero}}</td>
+          <td>${{game.precio}}</td>
+          <td>
+            <img [src]="game.imagenUrl"
+                 style="width:70px; height:70px; object-fit:cover;">
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm"
+                    (click)="deleteGame(game._id)">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
