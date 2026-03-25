@@ -1,0 +1,27 @@
+.pedido-card{
+background:white;
+padding:18px;
+margin-bottom:15px;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.12);
+}
+
+.estado-pendiente{
+color:#f59e0b;
+font-weight:bold;
+}
+
+.estado-preparando{
+color:#3b82f6;
+font-weight:bold;
+}
+
+.estado-listo{
+color:#8b5cf6;
+font-weight:bold;
+}
+
+.estado-entregado{
+color:#22c55e;
+font-weight:bold;
+}

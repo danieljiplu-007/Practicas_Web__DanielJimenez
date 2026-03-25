@@ -1,0 +1,89 @@
+<!-- HERO PRINCIPAL -->
+
+<section class="hero">
+
+  <div class="hero-contenido">
+
+    <h1>El Chinaloense Oficial</h1>
+
+    <p>Mariscos estilo Sinaloa, frescos y auténticos</p>
+
+    <div class="botones">
+
+      <a routerLink="/menu" class="btn-menu">
+        Ver Menú
+      </a>
+
+      <a routerLink="/login" class="btn-login">
+        Iniciar Sesión
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PLATILLOS POPULARES -->
+
+<section class="populares">
+
+  <h2>Platillos populares ⭐</h2>
+
+  <div class="platillos">
+
+    <div class="card" *ngFor="let p of getPopulares()">
+
+      <img [src]="p.imagen">
+
+      <h3>{{p.nombre}}</h3>
+
+      <p>$ {{p.precio}}</p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PROMOCION -->
+
+<section class="promo">
+
+<h2>{{promo.titulo}}</h2>
+
+<p>
+
+{{promo.descripcion}}
+
+</p>
+
+<img [src]="promo.imagen" class="promo-img">
+
+<a routerLink="/menu" class="btn-menu">
+
+Ordenar ahora
+
+</a>
+
+</section>
+
+<!-- SOBRE NOSOTROS -->
+
+<section class="nosotros">
+
+  <h2>Sobre nosotros</h2>
+
+  <p>
+
+    En El Chinaloense ofrecemos mariscos frescos
+    preparados al estilo tradicional de Sinaloa,
+    utilizando ingredientes de la mejor calidad.
+
+  </p>
+
+</section>
+
+

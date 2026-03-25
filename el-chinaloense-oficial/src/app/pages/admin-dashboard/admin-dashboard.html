@@ -1,0 +1,72 @@
+<div class="admin-container">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <h2>🍤 Panel Admin</h2>
+
+    <nav>
+
+      <a routerLink="/admin">
+        📊 Dashboard
+      </a>
+
+      <a routerLink="/admin-productos">
+        🍽 Productos
+      </a>
+
+      <a routerLink="/admin-pedidos">
+        📦 Pedidos
+      </a>
+
+      <a routerLink="/admin-ventas">
+        💰 Ventas
+      </a>
+
+      <a routerLink="/admin-promociones">
+        🎁 Promociones
+      </a>
+
+    </nav>
+
+  </aside>
+
+  <!-- CONTENIDO -->
+
+  <main class="content">
+
+    <h1>Dashboard</h1>
+
+    <div class="cards">
+
+      <div class="card pedidos" routerLink="/admin-pedidos">
+        <h3>Pedidos hoy</h3>
+        <h2>{{ pedidosHoy }}</h2>
+      </div>
+
+      <div class="card ventas" routerLink="/admin-ventas">
+        <h3>Ventas hoy</h3>
+        <h2>$ {{ ventasHoy }}</h2>
+      </div>
+
+      <div class="card productos" routerLink="/admin-productos">
+        <h3>Platillos</h3>
+        <h2>{{ platillos }}</h2>
+      </div>
+
+      <div class="card pendientes" routerLink="/admin-pedidos">
+        <h3>Pendientes</h3>
+        <h2>{{ pendientes }}</h2>
+      </div>
+
+      <div class="card promo" routerLink="/admin-promociones">
+        <h3>Promoción activa</h3>
+        <p>Editar</p>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>

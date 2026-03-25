@@ -1,0 +1,149 @@
+<div class="admin-productos">
+
+<h1>🍽 Gestión de Platillos</h1>
+
+<div class="form-admin">
+
+<h2>{{modoEdicion ? 'Editar Platillo' : 'Nuevo Platillo'}}</h2>
+
+<div class="form-grid">
+
+<input placeholder="Nombre del platillo" [(ngModel)]="nuevoProducto.nombre">
+
+<input placeholder="Descripción" [(ngModel)]="nuevoProducto.descripcion">
+
+<input type="number" placeholder="Precio" [(ngModel)]="nuevoProducto.precio">
+
+<select [(ngModel)]="nuevoProducto.categoria">
+<option value="">Seleccionar categoría</option>
+<option *ngFor="let cat of categorias">{{cat}}</option>
+</select>
+
+</div>
+
+<br>
+
+<label class="popular">
+
+<input type="checkbox" [(ngModel)]="nuevoProducto.popular">
+Platillo popular ⭐
+
+</label>
+
+<br><br>
+
+<label>Imagen del platillo</label>
+
+<input type="file" (change)="subirImagen($event)">
+
+<br>
+
+<img *ngIf="nuevoProducto.imagen" [src]="nuevoProducto.imagen" class="preview">
+
+<hr>
+
+<h3>Ingredientes</h3>
+
+<div class="ingredientes-form">
+
+<input placeholder="Ingrediente" [(ngModel)]="ingrediente">
+
+<button (click)="agregarIngrediente()">Agregar</button>
+
+</div>
+
+<ul class="lista">
+
+<li *ngFor="let ing of nuevoProducto.ingredientes; let i=index">
+
+{{ing}}
+
+<button (click)="eliminarIngrediente(i)">❌</button>
+
+</li>
+
+</ul>
+
+<hr>
+
+<h3>Extras</h3>
+
+<div class="extras-form">
+
+<input placeholder="Nombre extra" [(ngModel)]="extraNombre">
+
+<input type="number" placeholder="Precio" [(ngModel)]="extraPrecio">
+
+<button (click)="agregarExtra()">Agregar</button>
+
+</div>
+
+<ul class="lista">
+
+<li *ngFor="let ex of nuevoProducto.extras; let i=index">
+
+{{ex.nombre}} - ${{ex.precio}}
+
+<button (click)="eliminarExtra(i)">❌</button>
+
+</li>
+
+</ul>
+
+<br>
+
+<button class="btn-guardar" (click)="guardarProducto()">
+
+{{modoEdicion ? 'Guardar Cambios' : 'Guardar Platillo'}}
+
+</button>
+
+</div>
+
+<hr>
+
+<h2>🔎 Buscar producto</h2>
+
+<input class="buscar" placeholder="Buscar platillo..." [(ngModel)]="busqueda">
+
+<hr>
+
+<h2>Productos existentes</h2>
+
+<div *ngFor="let cat of categorias">
+
+<h2 class="categoria">{{cat}}</h2>
+
+<div class="menu-admin">
+
+<div class="card-admin"
+*ngFor="let p of getProductosFiltrados(cat)"
+[id]="'producto-'+p.id">
+
+<img [src]="p.imagen">
+
+<h3>{{p.nombre}}</h3>
+
+<p class="descripcion">{{p.descripcion}}</p>
+
+<p class="precio">$ {{p.precio}}</p>
+
+<div class="acciones">
+
+<button class="editar" (click)="editarProducto(p)">
+Editar
+</button>
+
+<button class="eliminar" (click)="eliminarProducto(p.id)">
+Eliminar
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>

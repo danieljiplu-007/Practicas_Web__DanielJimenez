@@ -1,0 +1,85 @@
+<div class="container">
+
+<h2>Carrito</h2>
+
+<p *ngIf="items.length === 0">
+No hay productos aún.
+</p>
+
+<div *ngFor="let item of items; let i = index" class="item">
+
+<div class="item-contenido">
+
+<div class="item-info">
+
+<h3>{{item.nombre}}</h3>
+
+<p>Precio: $ {{item.precioFinal || item.precio}}</p>
+
+<!-- INGREDIENTES QUITADOS -->
+
+<div *ngIf="item.ingredientesQuitados?.length > 0">
+
+<p><b>Sin:</b></p>
+
+<ul>
+<li *ngFor="let ing of item.ingredientesQuitados">
+{{ing}}
+</li>
+</ul>
+
+</div>
+
+<!-- EXTRAS -->
+
+<div *ngIf="item.extrasSeleccionados?.length > 0">
+
+<p><b>Extras:</b></p>
+
+<ul>
+<li *ngFor="let extra of item.extrasSeleccionados">
+{{extra.nombre}} (+ ${{extra.precio}})
+</li>
+</ul>
+
+</div>
+
+<div class="acciones">
+
+<button (click)="editarProducto(item,i)" class="btn-editar">
+Editar
+</button>
+
+<button (click)="remove(i)" class="btn-eliminar">
+Eliminar
+</button>
+
+</div>
+
+</div>
+
+<!-- IMAGEN DEL PRODUCTO -->
+
+<img *ngIf="item.imagen" [src]="item.imagen" class="imagen-carrito">
+
+</div>
+
+</div>
+
+<h3 *ngIf="items.length > 0">
+Total: $ {{total()}}
+</h3>
+
+<div class="botones" *ngIf="items.length > 0">
+
+<button (click)="realizarPedido()" class="btn-pedido">
+Realizar pedido
+</button>
+
+<button (click)="seguirComprando()" class="btn-seguir">
+Seguir comprando
+</button>
+
+</div>
+
+</div>

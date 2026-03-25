@@ -1,0 +1,67 @@
+<nav class="navbar">
+
+  <div class="logo">
+    🦐 El Chinaloense Oficial
+  </div>
+
+  <div class="nav-links">
+
+    <a routerLink="/">Inicio</a>
+
+    <!-- MENU DROPDOWN -->
+    <div class="dropdown">
+
+      <button class="dropbtn" (click)="toggleMenu()">
+        Menú ▼
+      </button>
+
+      <div class="dropdown-content" *ngIf="menuAbierto">
+
+        <a [routerLink]="['/menu']" [queryParams]="{categoria:'Especialidades'}" (click)="cerrarMenu()">Especialidades</a>
+
+        <a [routerLink]="['/menu']" [queryParams]="{categoria:'Sopas'}" (click)="cerrarMenu()">Sopas</a>
+
+        <a [routerLink]="['/menu']" [queryParams]="{categoria:'Aguachiles'}" (click)="cerrarMenu()">Aguachiles</a>
+
+        <a [routerLink]="['/menu']" [queryParams]="{categoria:'Ceviches'}" (click)="cerrarMenu()">Ceviches</a>
+
+        <a [routerLink]="['/menu']" [queryParams]="{categoria:'Tacos'}" (click)="cerrarMenu()">Tacos</a>
+
+        <a [routerLink]="['/menu']" [queryParams]="{categoria:'Camarones al gusto'}" (click)="cerrarMenu()">Camarones</a>
+
+        <a [routerLink]="['/menu']" [queryParams]="{categoria:'Bebidas'}" (click)="cerrarMenu()">Bebidas</a>
+
+      </div>
+
+    </div>
+
+    <!-- ADMIN -->
+    <a routerLink="/admin" *ngIf="esAdmin()">Panel Admin</a>
+
+    <a routerLink="/mis-pedidos">Mis pedidos</a>
+
+    <!-- CARRITO -->
+    <a routerLink="/carrito" class="carrito">
+      🛒 Carrito
+      <span class="contador" *ngIf="totalItems > 0">
+        {{ totalItems }}
+      </span>
+    </a>
+
+    <!-- USUARIO -->
+    <span *ngIf="estaLogueado()" class="usuario">
+      👤 Hola, {{ getUsuario()?.nombre }}
+    </span>
+
+    <!-- LOGIN -->
+    <a routerLink="/login" *ngIf="!estaLogueado()">Iniciar Sesión</a>
+    <a routerLink="/registro" *ngIf="!estaLogueado()">Registro</a>
+
+    <!-- LOGOUT -->
+    <a (click)="logout()" *ngIf="estaLogueado()" style="cursor:pointer">
+      Cerrar sesión
+    </a>
+
+  </div>
+
+</nav>

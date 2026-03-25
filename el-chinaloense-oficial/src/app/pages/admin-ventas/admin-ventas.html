@@ -1,0 +1,45 @@
+<div class="ventas-container">
+
+<h1>💰 Ventas del restaurante</h1>
+
+<div class="tabla-container">
+
+<table>
+
+<thead>
+<tr>
+<th>Cliente</th>
+<th>Total</th>
+<th>Fecha</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr *ngFor="let venta of ventas">
+
+<td>{{ venta.cliente }}</td>
+
+<td class="precio">
+$ {{ venta.total }}
+</td>
+
+<td>{{ venta.fecha }}</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="total-ventas">
+
+<h2>Total vendido</h2>
+
+<h1>$ {{ totalVentas }}</h1>
+
+</div>
+
+</div>

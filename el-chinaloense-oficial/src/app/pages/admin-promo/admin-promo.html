@@ -1,0 +1,33 @@
+<div class="promo-container">
+
+<h1>🎁 Promoción del día</h1>
+
+<div class="promo-card">
+
+<h2>Editar promoción</h2>
+
+<input
+placeholder="Título de la promoción"
+[(ngModel)]="promo.titulo"
+>
+
+<textarea
+placeholder="Descripción de la promoción"
+[(ngModel)]="promo.descripcion"
+></textarea>
+
+<label>Imagen de la promoción</label>
+
+<input type="file" (change)="subirImagen($event)">
+
+<img *ngIf="promo.imagen" [src]="promo.imagen" class="preview">
+
+<button (click)="guardar()" class="btn-guardar">
+
+Guardar promoción
+
+</button>
+
+</div>
+
+</div>

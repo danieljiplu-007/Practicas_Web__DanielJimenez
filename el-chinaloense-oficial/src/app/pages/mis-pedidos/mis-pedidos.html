@@ -1,0 +1,55 @@
+<h1>Mis pedidos</h1>
+
+<div *ngFor="let pedido of pedidos" class="pedido-card">
+
+<h3>Pedido #{{pedido.id}}</h3>
+
+<p>Total: ${{pedido.total}}</p>
+
+<p [ngClass]="'estado-' + pedido.estado">
+Estado: {{pedido.estado}}
+</p>
+
+<p>Fecha: {{pedido.fecha}}</p>
+
+<h4>Productos</h4>
+
+<ul>
+
+<li *ngFor="let p of pedido.productos">
+
+<b>{{p.nombre}}</b> - ${{p.precioFinal || p.precio}}
+
+<!-- INGREDIENTES QUITADOS -->
+
+<div *ngIf="p.ingredientesQuitados?.length > 0">
+
+<p><b>Sin:</b></p>
+
+<ul>
+<li *ngFor="let ing of p.ingredientesQuitados">
+{{ing}}
+</li>
+</ul>
+
+</div>
+
+<!-- EXTRAS -->
+
+<div *ngIf="p.extrasSeleccionados?.length > 0">
+
+<p><b>Extras:</b></p>
+
+<ul>
+<li *ngFor="let e of p.extrasSeleccionados">
+{{e.nombre}} (+ ${{e.precio}})
+</li>
+</ul>
+
+</div>
+
+</li>
+
+</ul>
+
+</div>

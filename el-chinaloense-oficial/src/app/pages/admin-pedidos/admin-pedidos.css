@@ -1,0 +1,89 @@
+/* CONTENEDOR GENERAL */
+
+.pedido-admin{
+background:white;
+padding:20px;
+margin-bottom:18px;
+border-radius:12px;
+box-shadow:0 6px 16px rgba(0,0,0,0.12);
+transition:0.2s;
+}
+
+.pedido-admin:hover{
+transform:translateY(-3px);
+}
+
+/* TITULO PEDIDO */
+
+.pedido-admin h3{
+margin-bottom:6px;
+color:#111827;
+}
+
+/* TOTAL */
+
+.pedido-admin p{
+margin:4px 0;
+color:#374151;
+}
+
+/* SELECT ESTADO */
+
+.pedido-admin select{
+margin-top:8px;
+padding:6px 10px;
+border-radius:6px;
+border:1px solid #d1d5db;
+background:white;
+cursor:pointer;
+}
+
+/* LISTA PRODUCTOS */
+
+.pedido-admin ul{
+margin-top:10px;
+padding-left:15px;
+}
+
+.pedido-admin li{
+background:#f9fafb;
+padding:8px;
+margin-bottom:8px;
+border-radius:6px;
+}
+
+/* INGREDIENTES */
+
+.pedido-admin li ul{
+margin-top:6px;
+}
+
+/* ESTADOS */
+
+.estado-pendiente{
+color:#f59e0b;
+font-weight:bold;
+}
+
+.estado-preparando{
+color:#3b82f6;
+font-weight:bold;
+}
+
+.estado-listo{
+color:#8b5cf6;
+font-weight:bold;
+}
+
+.estado-entregado{
+color:#22c55e;
+font-weight:bold;
+}
+
+/* TITULO PRODUCTOS */
+
+.pedido-admin h4{
+margin-top:10px;
+margin-bottom:6px;
+color:#1f2937;
+}

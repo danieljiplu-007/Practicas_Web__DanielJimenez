@@ -1,0 +1,176 @@
+/* HERO */
+
+.hero{
+
+height:420px;
+
+background:url("/assets/placeholder.jpg");
+
+background-size:cover;
+background-position:center;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+text-align:center;
+color:white;
+
+}
+
+.hero-contenido{
+
+background:rgba(0,0,0,0.5);
+padding:40px;
+border-radius:10px;
+
+}
+
+.hero h1{
+
+font-size:45px;
+margin-bottom:10px;
+
+}
+
+/* BOTONES */
+
+.botones{
+margin-top:20px;
+}
+
+.btn-menu{
+
+background:#0ea5a4;
+color:white;
+padding:10px 20px;
+border-radius:8px;
+text-decoration:none;
+margin-right:10px;
+font-weight:500;
+
+}
+
+.btn-login{
+
+background:#f97316;
+color:white;
+padding:10px 20px;
+border-radius:8px;
+text-decoration:none;
+font-weight:500;
+
+}
+
+.btn-menu:hover{
+background:#0f766e;
+}
+
+.btn-login:hover{
+background:#ea580c;
+}
+
+/* POPULARES */
+
+.populares{
+
+padding:40px;
+text-align:center;
+
+}
+
+.platillos{
+
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
+
+}
+
+/* CARD */
+
+.card{
+
+background:white;
+padding:15px;
+border-radius:10px;
+width:200px;
+text-align:center;
+box-shadow:0 2px 6px rgba(0,0,0,0.1);
+transition:0.3s;
+
+}
+
+.card:hover{
+
+transform:scale(1.05);
+
+}
+
+.card img{
+
+width:100%;
+border-radius:8px;
+margin-bottom:10px;
+
+}
+
+/* PROMO */
+
+.promo{
+
+background:#f97316;
+color:white;
+padding:40px;
+text-align:center;
+
+}
+
+/* NOSOTROS */
+
+.nosotros{
+
+padding:40px;
+text-align:center;
+
+}
+
+/* FOOTER */
+
+.footer{
+
+background:#222;
+color:white;
+padding:20px;
+text-align:center;
+
+}
+
+/* RESPONSIVE MOVIL */
+
+@media (max-width:768px){
+
+.hero{
+height:300px;
+}
+
+.hero h1{
+font-size:28px;
+}
+
+.platillos{
+flex-direction:column;
+align-items:center;
+}
+
+}
+.promo-img{
+
+width:300px;
+
+border-radius:10px;
+
+margin:20px 0;
+
+}

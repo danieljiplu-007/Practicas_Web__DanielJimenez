@@ -1,0 +1,132 @@
+<h1>Menú Chinaloense</h1>
+
+<!-- ⭐ PLATILLOS POPULARES -->
+
+<div *ngIf="getPopulares().length > 0">
+
+<h2>⭐ Platillos Populares</h2>
+
+<div class="menu-container">
+
+<div 
+class="card"
+*ngFor="let platillo of getPopulares()"
+(click)="seleccionarPlatillo(platillo)"
+>
+
+<img [src]="platillo.imagen" alt="{{platillo.nombre}}">
+
+<h3>{{ platillo.nombre }}</h3>
+
+<p>$ {{ platillo.precio }}</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- CATEGORÍAS -->
+
+<div class="categorias" id="categorias">
+
+<button
+*ngFor="let cat of categorias"
+(click)="filtrarCategoria(cat)"
+[class.activa]="categoriaSeleccionada === cat"
+>
+
+{{ cat }}
+
+</button>
+
+</div>
+
+<!-- MENÚ DE PLATILLOS -->
+
+<div class="menu-container">
+
+<div 
+class="card"
+*ngFor="let platillo of getPlatillosFiltrados()"
+(click)="seleccionarPlatillo(platillo)"
+>
+
+<img [src]="platillo.imagen" alt="{{platillo.nombre}}">
+
+<h3>{{ platillo.nombre }}</h3>
+
+<p>$ {{ platillo.precio }}</p>
+
+</div>
+
+</div>
+
+<!-- MODAL DETALLE -->
+
+<div class="modal" *ngIf="platilloSeleccionado">
+
+<div class="modal-contenido">
+
+<button class="cerrar" (click)="cerrarDetalle()">X</button>
+
+<h2>{{ platilloSeleccionado.nombre }}</h2>
+
+<img [src]="platilloSeleccionado.imagen">
+
+<p>{{ platilloSeleccionado.descripcion }}</p>
+
+<h3 class="precio-total">
+Precio total: $ {{ calcularPrecio() }}
+</h3>
+
+<h4>Ingredientes</h4>
+
+<div class="ingredientes">
+
+<label *ngFor="let ing of platilloSeleccionado.ingredientes">
+
+<input
+type="checkbox"
+[checked]="!ingredientesQuitados.includes(ing)"
+(change)="toggleIngrediente(ing)"
+>
+
+Sin {{ ing }}
+
+</label>
+
+</div>
+
+<h4 *ngIf="platilloSeleccionado.extras.length > 0">
+Extras
+</h4>
+
+<div class="extras-container">
+
+<label *ngFor="let extra of platilloSeleccionado.extras">
+
+<input
+type="checkbox"
+[checked]="extraSeleccionado(extra)"
+(change)="toggleExtra(extra)"
+>
+
+{{ extra.nombre }} (+ ${{ extra.precio }})
+
+</label>
+
+</div>
+
+<button 
+class="btn-carrito"
+(click)="agregarAlCarrito()"
+>
+
+Agregar al carrito 🛒
+
+</button>
+
+</div>
+
+</div>
