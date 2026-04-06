@@ -1,6 +1,6 @@
 <h1>Menú Chinaloense</h1>
 
-<!-- ⭐ PLATILLOS POPULARES -->
+<!-- ⭐ POPULARES -->
 
 <div *ngIf="getPopulares().length > 0">
 
@@ -14,7 +14,7 @@ class="card"
 (click)="seleccionarPlatillo(platillo)"
 >
 
-<img [src]="platillo.imagen" alt="{{platillo.nombre}}">
+<img [src]="platillo.imagen">
 
 <h3>{{ platillo.nombre }}</h3>
 
@@ -35,14 +35,12 @@ class="card"
 (click)="filtrarCategoria(cat)"
 [class.activa]="categoriaSeleccionada === cat"
 >
-
 {{ cat }}
-
 </button>
 
 </div>
 
-<!-- MENÚ DE PLATILLOS -->
+<!-- MENÚ -->
 
 <div class="menu-container">
 
@@ -52,7 +50,7 @@ class="card"
 (click)="seleccionarPlatillo(platillo)"
 >
 
-<img [src]="platillo.imagen" alt="{{platillo.nombre}}">
+<img [src]="platillo.imagen">
 
 <h3>{{ platillo.nombre }}</h3>
 
@@ -62,25 +60,25 @@ class="card"
 
 </div>
 
-<!-- MODAL DETALLE -->
+<!-- 🔥 MODAL PRO -->
 
-<div class="modal" *ngIf="platilloSeleccionado">
+<div class="modal-backdrop" *ngIf="platilloSeleccionado">
 
-<div class="modal-contenido">
+<div class="modal">
 
-<button class="cerrar" (click)="cerrarDetalle()">X</button>
-
-<h2>{{ platilloSeleccionado.nombre }}</h2>
+<button class="cerrar" (click)="cerrarDetalle()">✕</button>
 
 <img [src]="platilloSeleccionado.imagen">
 
-<p>{{ platilloSeleccionado.descripcion }}</p>
+<h2>{{ platilloSeleccionado.nombre }}</h2>
+
+<p class="descripcion">{{ platilloSeleccionado.descripcion }}</p>
 
 <h3 class="precio-total">
-Precio total: $ {{ calcularPrecio() }}
+$ {{ calcularPrecio() }}
 </h3>
 
-<h4>Ingredientes</h4>
+<h4>Personaliza</h4>
 
 <div class="ingredientes">
 
@@ -122,9 +120,7 @@ type="checkbox"
 class="btn-carrito"
 (click)="agregarAlCarrito()"
 >
-
 Agregar al carrito 🛒
-
 </button>
 
 </div>

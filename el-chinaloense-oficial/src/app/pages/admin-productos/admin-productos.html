@@ -9,9 +9,7 @@
 <div class="form-grid">
 
 <input placeholder="Nombre del platillo" [(ngModel)]="nuevoProducto.nombre">
-
 <input placeholder="Descripción" [(ngModel)]="nuevoProducto.descripcion">
-
 <input type="number" placeholder="Precio" [(ngModel)]="nuevoProducto.precio">
 
 <select [(ngModel)]="nuevoProducto.categoria">
@@ -23,45 +21,36 @@
 
 <br>
 
-<label class="popular">
-
+<label>
 <input type="checkbox" [(ngModel)]="nuevoProducto.popular">
-Platillo popular ⭐
-
+Popular ⭐
 </label>
 
 <br><br>
 
-<label>Imagen del platillo</label>
-
 <input type="file" (change)="subirImagen($event)">
 
-<br>
+<img 
+*ngIf="nuevoProducto.imagen"
+[src]="nuevoProducto.imagen"
+class="preview"
+>
 
-<img *ngIf="nuevoProducto.imagen" [src]="nuevoProducto.imagen" class="preview">
+<p *ngIf="subiendoImagen">Subiendo imagen...</p>
 
 <hr>
 
 <h3>Ingredientes</h3>
 
 <div class="ingredientes-form">
-
-<input placeholder="Ingrediente" [(ngModel)]="ingrediente">
-
+<input [(ngModel)]="ingrediente" placeholder="Ingrediente">
 <button (click)="agregarIngrediente()">Agregar</button>
-
 </div>
 
 <ul class="lista">
-
-<li *ngFor="let ing of nuevoProducto.ingredientes; let i=index">
-
-{{ing}}
-
-<button (click)="eliminarIngrediente(i)">❌</button>
-
+<li *ngFor="let ing of nuevoProducto.ingredientes; let i = index">
+{{ing}} <button (click)="eliminarIngrediente(i)">❌</button>
 </li>
-
 </ul>
 
 <hr>
@@ -69,46 +58,29 @@ Platillo popular ⭐
 <h3>Extras</h3>
 
 <div class="extras-form">
-
-<input placeholder="Nombre extra" [(ngModel)]="extraNombre">
-
-<input type="number" placeholder="Precio" [(ngModel)]="extraPrecio">
-
+<input [(ngModel)]="extraNombre" placeholder="Nombre extra">
+<input [(ngModel)]="extraPrecio" type="number" placeholder="Precio">
 <button (click)="agregarExtra()">Agregar</button>
-
 </div>
 
 <ul class="lista">
-
-<li *ngFor="let ex of nuevoProducto.extras; let i=index">
-
+<li *ngFor="let ex of nuevoProducto.extras; let i = index">
 {{ex.nombre}} - ${{ex.precio}}
-
 <button (click)="eliminarExtra(i)">❌</button>
-
 </li>
-
 </ul>
 
 <br>
 
-<button class="btn-guardar" (click)="guardarProducto()">
-
-{{modoEdicion ? 'Guardar Cambios' : 'Guardar Platillo'}}
-
+<button class="btn-guardar" (click)="guardarProducto()" [disabled]="subiendoImagen">
+Guardar
 </button>
 
 </div>
 
 <hr>
 
-<h2>🔎 Buscar producto</h2>
-
-<input class="buscar" placeholder="Buscar platillo..." [(ngModel)]="busqueda">
-
-<hr>
-
-<h2>Productos existentes</h2>
+<input class="buscar" placeholder="Buscar..." [(ngModel)]="busqueda">
 
 <div *ngFor="let cat of categorias">
 
@@ -117,27 +89,17 @@ Platillo popular ⭐
 <div class="menu-admin">
 
 <div class="card-admin"
-*ngFor="let p of getProductosFiltrados(cat)"
-[id]="'producto-'+p.id">
+*ngFor="let p of getProductosFiltrados(cat)">
 
-<img [src]="p.imagen">
+<img [src]="p.imagen || 'assets/menu/placeholder.jpg'">
 
 <h3>{{p.nombre}}</h3>
-
 <p class="descripcion">{{p.descripcion}}</p>
-
 <p class="precio">$ {{p.precio}}</p>
 
 <div class="acciones">
-
-<button class="editar" (click)="editarProducto(p)">
-Editar
-</button>
-
-<button class="eliminar" (click)="eliminarProducto(p.id)">
-Eliminar
-</button>
-
+<button class="editar" (click)="editarProducto(p)">Editar</button>
+<button class="eliminar" (click)="eliminarProducto(p.id)">Eliminar</button>
 </div>
 
 </div>
