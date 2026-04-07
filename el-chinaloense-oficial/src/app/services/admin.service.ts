@@ -12,46 +12,57 @@ export class AdminService {
     private productosService: ProductosService
   ) {}
 
-  getPedidosHoy() {
+  getPedidosHoy(callback: (cantidad: number) => void) {
 
-    const pedidos = this.pedidosService.getPedidos();
+    this.pedidosService.getPedidos().subscribe(pedidos => {
 
-    const hoy = new Date().toLocaleDateString();
+      const hoy = new Date().toISOString().split('T')[0];
 
-    const pedidosHoy = pedidos.filter((p:any) => p.fecha === hoy);
+      const pedidosHoy = pedidos.filter((p:any) =>
+        p.fecha?.startsWith(hoy)
+      );
 
-    return pedidosHoy.length;
+      callback(pedidosHoy.length);
 
-  }
-
-  getVentasHoy() {
-
-    const pedidos = this.pedidosService.getPedidos();
-
-    const hoy = new Date().toLocaleDateString();
-
-    const pedidosHoy = pedidos.filter((p:any) => p.fecha === hoy);
-
-    return pedidosHoy.reduce((total:number, pedido:any) => {
-      return total + pedido.total;
-    }, 0);
+    });
 
   }
 
-  // 🔥 CAMBIO IMPORTANTE
+  getVentasHoy(callback: (total: number) => void) {
+
+    this.pedidosService.getPedidos().subscribe(pedidos => {
+
+      const hoy = new Date().toISOString().split('T')[0];
+
+      const total = pedidos
+        .filter((p:any) => p.fecha?.startsWith(hoy))
+        .reduce((sum:number, p:any) => sum + (p.total || 0), 0);
+
+      callback(total);
+
+    });
+
+  }
+
   getPlatillos(callback: (cantidad:number)=>void) {
 
     this.productosService.getProductos().subscribe(data => {
-      callback(data.length)
-    })
+      callback(data.length);
+    });
 
   }
 
-  getPendientes() {
+  getPendientes(callback: (cantidad:number) => void) {
 
-    const pedidos = this.pedidosService.getPedidos();
+    this.pedidosService.getPedidos().subscribe(pedidos => {
 
-    return pedidos.filter((p:any) => p.estado === 'pendiente').length;
+      const pendientes = pedidos.filter((p:any) =>
+        p.estado === 'pendiente'
+      );
+
+      callback(pendientes.length);
+
+    });
 
   }
 

@@ -17,7 +17,9 @@ constructor(private pedidosService:PedidosService){}
 
 ngOnInit(){
 
-this.pedidos=this.pedidosService.getPedidos()
+this.pedidosService.getPedidos().subscribe(data => {
+  this.pedidos = data;
+});
 
 }
 
