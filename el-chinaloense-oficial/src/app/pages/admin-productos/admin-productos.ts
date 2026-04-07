@@ -59,8 +59,11 @@ export class AdminProductosComponent implements OnInit {
   cargarProductos() {
     this.productosService.getProductos().subscribe({
       next: (data) => {
-        this.productos = data
-        this.cd.detectChanges()
+        this.productos = [...data]
+
+        setTimeout(() => {
+          this.cd.detectChanges()
+        }, 0)
       },
       error: (err) => console.error('Error cargando productos:', err)
     })
@@ -161,7 +164,6 @@ export class AdminProductosComponent implements OnInit {
   editarProducto(p: Producto) {
     this.modoEdicion = true
     this.productoEditandoId = p._id || null
-
     this.nuevoProducto = JSON.parse(JSON.stringify(p))
 
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -201,6 +203,10 @@ export class AdminProductosComponent implements OnInit {
 
     this.modoEdicion = false
     this.productoEditandoId = null
+  }
+
+  trackById(index: number, item: any) {
+    return item._id
   }
 
 }

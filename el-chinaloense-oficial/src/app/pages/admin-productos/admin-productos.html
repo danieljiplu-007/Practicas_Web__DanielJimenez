@@ -89,7 +89,7 @@ Guardar
 <div class="menu-admin">
 
 <div class="card-admin"
-*ngFor="let p of getProductosFiltrados(cat)">
+*ngFor="let p of getProductosFiltrados(cat); trackBy: trackById">
 
 <img [src]="p.imagen || 'assets/menu/placeholder.jpg'">
 
