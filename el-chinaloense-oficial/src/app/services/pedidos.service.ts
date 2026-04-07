@@ -7,23 +7,23 @@ import { Observable } from 'rxjs';
 })
 export class PedidosService {
 
-  private apiUrl = 'https://elchinaloense-backend.onrender.com/pedidos';
+  private API = 'https://elchinaloense-backend.onrender.com';
 
   constructor(private http: HttpClient) {}
 
-  
-  guardarPedido(pedido: any): Observable<any> {
-    return this.http.post(this.apiUrl, pedido);
-  }
-
- 
+  // 🔥 OBTENER PEDIDOS
   getPedidos(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+    return this.http.get<any[]>(`${this.API}/pedidos`);
   }
 
-  
+  // 🔥 CREAR PEDIDO
+  guardarPedido(pedido: any): Observable<any> {
+    return this.http.post(`${this.API}/pedidos`, pedido);
+  }
+
+  // 🔥 ACTUALIZAR ESTADO
   actualizarEstado(id: string, estado: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, { estado });
+    return this.http.put(`${this.API}/pedidos/${id}`, { estado });
   }
 
 }

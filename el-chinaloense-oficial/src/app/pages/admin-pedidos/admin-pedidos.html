@@ -10,7 +10,7 @@
 Estado: {{pedido.estado}}
 </p>
 
-<select (change)="cambiarEstado(pedido.id, $any($event.target).value)">
+<select (change)="cambiarEstado(pedido._id, $any($event.target).value)">
 
 <option value="pendiente">Pendiente</option>
 <option value="preparando">Preparando</option>

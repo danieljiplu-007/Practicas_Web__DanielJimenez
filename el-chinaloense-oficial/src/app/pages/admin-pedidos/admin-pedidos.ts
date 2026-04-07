@@ -11,30 +11,35 @@ import { PedidosService } from '../../services/pedidos.service';
 })
 export class AdminPedidosComponent {
 
-  pedidos:any[] = [];
+  pedidos: any[] = [];
 
-  constructor(private pedidosService: PedidosService){}
+  constructor(private pedidosService: PedidosService) {}
 
-  ngOnInit(){
-
+  ngOnInit() {
     this.cargarPedidos();
+  }
+
+  cargarPedidos() {
+
+    this.pedidosService.getPedidos().subscribe({
+      next: (data) => {
+
+        this.pedidos = data
+          .filter(p => p.estado !== 'entregado')
+          .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
+
+      },
+      error: (err) => console.error('Error cargando pedidos:', err)
+    });
 
   }
 
-  cargarPedidos(){
+  cambiarEstado(id: string, estado: string) {
 
-  this.pedidos = this.pedidosService
-  .getPedidos()
-  .filter((p:any) => p.estado !== 'entregado')
-  .sort((a:any, b:any) => b.id - a.id);
-
-}
-  cambiarEstado(id:number, estado:string){
-
-    this.pedidosService.actualizarEstado(id, estado);
-
-    // refrescar lista
-    this.cargarPedidos();
+    this.pedidosService.actualizarEstado(id, estado).subscribe({
+      next: () => this.cargarPedidos(),
+      error: (err) => console.error('Error actualizando estado:', err)
+    });
 
   }
 
