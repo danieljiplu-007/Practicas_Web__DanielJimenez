@@ -24,10 +24,8 @@ export class CarritoComponent {
   }
 
   remove(index: number) {
-
     this.cartService.removeItem(index);
     this.items = this.cartService.getItems();
-
   }
 
   editarProducto(item:any, index:number){
@@ -38,50 +36,53 @@ export class CarritoComponent {
     }
 
     localStorage.setItem('editarProducto', JSON.stringify(data));
-
     this.router.navigate(['/menu']);
-
   }
 
   total() {
-
     return this.cartService.getTotal();
-
   }
 
   seguirComprando() {
-
     this.router.navigate(['/menu']);
-
   }
 
+  
   realizarPedido(){
+
+    if(this.items.length === 0){
+      alert("El carrito está vacío ❌");
+      return;
+    }
 
     const usuario = JSON.parse(localStorage.getItem('usuario') || 'null');
 
     const pedido = {
-
       cliente: usuario?.nombre || 'Cliente',
-
       productos: this.items,
-
       total: this.total(),
-
       estado: 'pendiente',
-
-      fecha: new Date().toLocaleDateString()
-
+      fecha: new Date().toISOString() 
     }
 
-    this.pedidosService.guardarPedido(pedido)
+    this.pedidosService.guardarPedido(pedido).subscribe({
 
-    alert("Pedido enviado al restaurante")
+      next: () => {
 
-    this.cartService.clearCart()
+        alert("Pedido enviado al restaurante ✅🔥")
 
-    this.items=[]
+        this.cartService.clearCart();
+        this.items = [];
 
-    this.router.navigate(['/mis-pedidos'])
+        this.router.navigate(['/mis-pedidos']);
+      },
+
+      error: (err) => {
+        console.error(err);
+        alert("Error al enviar pedido ❌");
+      }
+
+    });
 
   }
 

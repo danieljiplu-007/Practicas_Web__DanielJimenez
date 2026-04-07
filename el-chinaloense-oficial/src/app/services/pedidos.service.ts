@@ -1,53 +1,29 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PedidosService {
 
-  pedidos:any[] = JSON.parse(localStorage.getItem('pedidos') || '[]');
+  private apiUrl = 'https://elchinaloense-backend.onrender.com/pedidos';
 
-  constructor(){
+  constructor(private http: HttpClient) {}
 
-    this.limpiarPedidosAntiguos();
-
+  
+  guardarPedido(pedido: any): Observable<any> {
+    return this.http.post(this.apiUrl, pedido);
   }
 
-  getPedidos(){
-    return this.pedidos;
+ 
+  getPedidos(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
   }
 
-  guardarPedido(pedido:any){
-
-    pedido.id = Date.now();
-    pedido.estado = 'pendiente';
-
-    // pedido nuevo arriba
-    this.pedidos.unshift(pedido);
-
-    localStorage.setItem('pedidos', JSON.stringify(this.pedidos));
-
-  }
-
-  actualizarEstado(id:number, estado:string){
-
-    const pedido = this.pedidos.find(p => p.id === id);
-
-    if(pedido){
-      pedido.estado = estado;
-      localStorage.setItem('pedidos', JSON.stringify(this.pedidos));
-    }
-
-  }
-
-  limpiarPedidosAntiguos(){
-
-    const hoy = new Date().toLocaleDateString();
-
-    this.pedidos = this.pedidos.filter(p => p.fecha === hoy);
-
-    localStorage.setItem('pedidos', JSON.stringify(this.pedidos));
-
+  
+  actualizarEstado(id: string, estado: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, { estado });
   }
 
 }
