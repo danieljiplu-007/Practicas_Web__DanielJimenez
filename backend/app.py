@@ -7,19 +7,21 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# 🔥 CONEXIÓN MONGO
 client = MongoClient(os.environ.get("MONGO_URI"))
 
 db = client["chinaloenseDB"]
 collection = db["platillos"]
-collection_pedidos = db["pedidos"]  # 🔥 NUEVO
+collection_pedidos = db["pedidos"]
 
-# 🔹 HOME
 @app.route("/")
 def home():
     return "Backend funcionando"
 
-# 🔹 GET PLATILLOS
+
+# =========================
+# 🔹 PLATILLOS
+# =========================
+
 @app.route("/platillos", methods=["GET"])
 def obtener_platillos():
     try:
@@ -31,7 +33,7 @@ def obtener_platillos():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# 🔹 POST PLATILLOS
+
 @app.route("/platillos", methods=["POST"])
 def agregar_platillo():
     try:
@@ -53,7 +55,7 @@ def agregar_platillo():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# 🔹 PUT PLATILLOS
+
 @app.route("/platillos/<id>", methods=["PUT"])
 def actualizar_platillo(id):
     try:
@@ -75,7 +77,7 @@ def actualizar_platillo(id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# 🔹 DELETE PLATILLOS
+
 @app.route("/platillos/<id>", methods=["DELETE"])
 def eliminar_platillo(id):
     try:
@@ -86,10 +88,9 @@ def eliminar_platillo(id):
 
 
 # =========================
-# 🔥 PEDIDOS (NUEVO)
+# 🔥 PEDIDOS
 # =========================
 
-# 🔹 CREAR PEDIDO
 @app.route("/pedidos", methods=["POST"])
 def crear_pedido():
     try:
@@ -110,7 +111,6 @@ def crear_pedido():
         return jsonify({"error": str(e)}), 500
 
 
-# 🔹 OBTENER PEDIDOS
 @app.route("/pedidos", methods=["GET"])
 def obtener_pedidos():
     try:
@@ -124,6 +124,30 @@ def obtener_pedidos():
 
     except Exception as e:
         print("ERROR GET PEDIDOS:", e)
+        return jsonify({"error": str(e)}), 500
+
+
+# 🔥 NUEVO — ACTUALIZAR ESTADO DEL PEDIDO
+@app.route("/pedidos/<id>", methods=["PUT"])
+def actualizar_estado_pedido(id):
+    try:
+        data = request.get_json()
+
+        if not data or "estado" not in data:
+            return jsonify({"error": "Estado requerido"}), 400
+
+        resultado = collection_pedidos.update_one(
+            {"_id": ObjectId(id)},
+            {"$set": {"estado": data["estado"]}}
+        )
+
+        if resultado.matched_count == 0:
+            return jsonify({"error": "Pedido no encontrado"}), 404
+
+        return jsonify({"mensaje": "Estado actualizado"}), 200
+
+    except Exception as e:
+        print("ERROR PUT PEDIDO:", e)
         return jsonify({"error": str(e)}), 500
 
 
