@@ -14,6 +14,8 @@ export class AdminDashboardComponent implements OnInit {
 
   pedidosHoy = 0;
   ventasHoy = 0;
+  ventasSemana = 0;
+  ventasMes = 0; // 🔥 NUEVO
   platillos = 0;
   pendientes = 0;
 
@@ -25,22 +27,27 @@ export class AdminDashboardComponent implements OnInit {
 
   cargarDatos() {
 
-    
     this.adminService.getPedidosHoy((cantidad) => {
       this.pedidosHoy = cantidad;
     });
 
-    
     this.adminService.getVentasHoy((total) => {
       this.ventasHoy = total;
     });
 
-    
+    this.adminService.getVentasSemana((total) => {
+      this.ventasSemana = total;
+    });
+
+    // 🔥 NUEVO
+    this.adminService.getVentasMes((total) => {
+      this.ventasMes = total;
+    });
+
     this.adminService.getPlatillos((cantidad) => {
       this.platillos = cantidad;
     });
 
-    
     this.adminService.getPendientes((cantidad) => {
       this.pendientes = cantidad;
     });

@@ -1,38 +1,18 @@
 <div class="admin-container">
 
-  <!-- SIDEBAR -->
-
   <aside class="sidebar">
 
     <h2>🍤 Panel Admin</h2>
 
     <nav>
-
-      <a routerLink="/admin">
-        📊 Dashboard
-      </a>
-
-      <a routerLink="/admin-productos">
-        🍽 Productos
-      </a>
-
-      <a routerLink="/admin-pedidos">
-        📦 Pedidos
-      </a>
-
-      <a routerLink="/admin-ventas">
-        💰 Ventas
-      </a>
-
-      <a routerLink="/admin-promociones">
-        🎁 Promociones
-      </a>
-
+      <a routerLink="/admin">📊 Dashboard</a>
+      <a routerLink="/admin-productos">🍽 Productos</a>
+      <a routerLink="/admin-pedidos">📦 Pedidos</a>
+      <a routerLink="/admin-ventas">💰 Ventas</a>
+      <a routerLink="/admin-promociones">🎁 Promociones</a>
     </nav>
 
   </aside>
-
-  <!-- CONTENIDO -->
 
   <main class="content">
 
@@ -48,6 +28,17 @@
       <div class="card ventas" routerLink="/admin-ventas">
         <h3>Ventas hoy</h3>
         <h2>$ {{ ventasHoy }}</h2>
+      </div>
+
+      <div class="card ventas" routerLink="/admin-ventas">
+        <h3>Ventas semana</h3>
+        <h2>$ {{ ventasSemana }}</h2>
+      </div>
+
+      <!-- 🔥 NUEVO -->
+      <div class="card ventas" routerLink="/admin-ventas">
+        <h3>Ventas mes</h3>
+        <h2>$ {{ ventasMes }}</h2>
       </div>
 
       <div class="card productos" routerLink="/admin-productos">
