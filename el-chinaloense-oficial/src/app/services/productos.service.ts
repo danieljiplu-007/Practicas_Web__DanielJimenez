@@ -8,7 +8,7 @@ import { Producto } from '../models/producto'
 })
 export class ProductosService {
 
-  private apiUrl = 'http://localhost:5000/platillos'
+  private apiUrl = 'https://elchinaloense-backend.onrender.com'
 
   constructor(private http: HttpClient) {}
 
