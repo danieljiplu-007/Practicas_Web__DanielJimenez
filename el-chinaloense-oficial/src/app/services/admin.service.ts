@@ -38,11 +38,12 @@ export class AdminService {
 
   }
 
-  getPlatillos() {
+  // 🔥 CAMBIO IMPORTANTE
+  getPlatillos(callback: (cantidad:number)=>void) {
 
-    const productos = this.productosService.getProductos();
-
-    return productos.length;
+    this.productosService.getProductos().subscribe(data => {
+      callback(data.length)
+    })
 
   }
 

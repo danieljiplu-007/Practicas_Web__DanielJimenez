@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { ProductosService } from '../../services/productos.service'
@@ -13,8 +13,6 @@ import { Producto } from '../../models/producto'
 })
 
 export class AdminProductosComponent implements OnInit{
-
-  Date = Date // 🔥 FIX PARA HTML
 
   productos:Producto[]=[]
   busqueda:string=''
@@ -32,8 +30,7 @@ export class AdminProductosComponent implements OnInit{
   ]
 
   modoEdicion:boolean=false
-  productoEditandoId:number|null=null
-
+  productoEditandoId:string|null=null
   subiendoImagen:boolean=false
 
   nuevoProducto:Producto={
@@ -52,10 +49,20 @@ export class AdminProductosComponent implements OnInit{
   extraNombre=''
   extraPrecio=0
 
-  constructor(private productosService:ProductosService){}
+  constructor(
+    private productosService:ProductosService,
+    private cd:ChangeDetectorRef
+  ){}
 
   ngOnInit(){
-    this.productos = [...this.productosService.getProductos()]
+    this.cargarProductos()
+  }
+
+  cargarProductos(){
+    this.productosService.getProductos().subscribe(data => {
+      this.productos = [...data]
+      this.cd.detectChanges()
+    })
   }
 
   agregarIngrediente(){
@@ -84,9 +91,7 @@ export class AdminProductosComponent implements OnInit{
     this.nuevoProducto.extras.splice(index,1)
   }
 
-  // 🔥 SUBIDA DEFINITIVA
   subirImagen(event:any){
-
     const file = event.target.files[0]
     if(!file) return
 
@@ -94,78 +99,69 @@ export class AdminProductosComponent implements OnInit{
 
     const formData = new FormData()
     formData.append('file', file)
+    formData.append('upload_preset', 'menu_upload')
 
-    fetch('http://localhost:3000/upload',{
-      method:'POST',
-      body:formData
+    fetch('https://api.cloudinary.com/v1_1/dqpmtzw8x/image/upload', {
+      method: 'POST',
+      body: formData
     })
     .then(res => res.json())
     .then(data => {
-
-      console.log('URL:', data.url)
-
-      if(data.url){
-        this.nuevoProducto = {
-          ...this.nuevoProducto,
-          imagen: data.url
-        }
+      if(data.secure_url){
+        this.nuevoProducto.imagen = data.secure_url
+        this.cd.detectChanges()
       }
-
       this.subiendoImagen = false
     })
-    .catch(err=>{
-      console.error(err)
+    .catch(() => {
       this.subiendoImagen = false
     })
   }
 
   guardarProducto(){
 
-    if(this.subiendoImagen){
-      alert('Espera a que termine la imagen')
-      return
-    }
+    if(this.subiendoImagen) return
+    if(!this.nuevoProducto.imagen) return
 
-    if(!this.nuevoProducto.imagen){
-      alert('Sube una imagen primero')
-      return
-    }
+    if(this.modoEdicion && this.productoEditandoId){
 
-    if(this.modoEdicion){
-      this.productosService.actualizarProducto(this.nuevoProducto)
+      this.productosService.actualizarProducto(
+        this.productoEditandoId,
+        this.nuevoProducto
+      ).subscribe(()=>{
+        this.cargarProductos()
+        this.limpiarFormulario()
+      })
+
     }else{
-      this.productosService.agregarProducto(this.nuevoProducto)
+
+      this.productosService.agregarProducto(this.nuevoProducto).subscribe(()=>{
+        this.cargarProductos()
+        this.limpiarFormulario()
+      })
+
     }
 
-    this.productos = [...this.productosService.getProductos()]
-    this.limpiarFormulario()
   }
 
-  editarProducto(p:Producto){
+  editarProducto(p:any){
+    this.modoEdicion = true
+    this.productoEditandoId = p._id
+    this.nuevoProducto = JSON.parse(JSON.stringify(p))
 
-  this.modoEdicion = true
-  this.productoEditandoId = p.id
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
-  // 🔥 CLON SEGURO
-  this.nuevoProducto = JSON.parse(JSON.stringify(p))
-
-  // 🔥 ESTO ES LO QUE TE FALTA (SCROLL ARRIBA)
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  })
-}
-
-  eliminarProducto(id:number){
-    this.productosService.eliminarProducto(id)
-    this.productos = [...this.productosService.getProductos()]
+  eliminarProducto(id:string){
+    this.productosService.eliminarProducto(id).subscribe(()=>{
+      this.cargarProductos()
+    })
   }
 
   getProductosFiltrados(cat:string){
     return this.productos
       .filter(p=>p.categoria===cat)
       .filter(p=>p.nombre.toLowerCase().includes(this.busqueda.toLowerCase()))
-      .sort((a,b)=>a.nombre.localeCompare(b.nombre))
   }
 
   limpiarFormulario(){
@@ -184,6 +180,8 @@ export class AdminProductosComponent implements OnInit{
     this.ingrediente=''
     this.extraNombre=''
     this.extraPrecio=0
+    this.modoEdicion=false
+    this.productoEditandoId=null
   }
 
 }

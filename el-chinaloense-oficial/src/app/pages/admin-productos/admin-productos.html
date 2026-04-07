@@ -44,12 +44,12 @@ class="preview"
 
 <div class="ingredientes-form">
 <input [(ngModel)]="ingrediente" placeholder="Ingrediente">
-<button (click)="agregarIngrediente()">Agregar</button>
+<button type="button" (click)="agregarIngrediente()">Agregar</button>
 </div>
 
 <ul class="lista">
 <li *ngFor="let ing of nuevoProducto.ingredientes; let i = index">
-{{ing}} <button (click)="eliminarIngrediente(i)">❌</button>
+{{ing}} <button type="button" (click)="eliminarIngrediente(i)">❌</button>
 </li>
 </ul>
 
@@ -60,19 +60,19 @@ class="preview"
 <div class="extras-form">
 <input [(ngModel)]="extraNombre" placeholder="Nombre extra">
 <input [(ngModel)]="extraPrecio" type="number" placeholder="Precio">
-<button (click)="agregarExtra()">Agregar</button>
+<button type="button" (click)="agregarExtra()">Agregar</button>
 </div>
 
 <ul class="lista">
 <li *ngFor="let ex of nuevoProducto.extras; let i = index">
 {{ex.nombre}} - ${{ex.precio}}
-<button (click)="eliminarExtra(i)">❌</button>
+<button type="button" (click)="eliminarExtra(i)">❌</button>
 </li>
 </ul>
 
 <br>
 
-<button class="btn-guardar" (click)="guardarProducto()" [disabled]="subiendoImagen">
+<button class="btn-guardar" type="button" (click)="guardarProducto()" [disabled]="subiendoImagen">
 Guardar
 </button>
 
@@ -98,8 +98,8 @@ Guardar
 <p class="precio">$ {{p.precio}}</p>
 
 <div class="acciones">
-<button class="editar" (click)="editarProducto(p)">Editar</button>
-<button class="eliminar" (click)="eliminarProducto(p.id)">Eliminar</button>
+<button type="button" class="editar" (click)="editarProducto(p)">Editar</button>
+<button type="button" class="eliminar" (click)="eliminarProducto(p._id!)">Eliminar</button>
 </div>
 
 </div>

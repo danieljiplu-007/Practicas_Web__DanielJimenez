@@ -5,6 +5,8 @@ precio:number
 
 export interface Producto{
 
+_id?: string   // 🔥 AGREGADO PARA MONGO
+
 id:number
 nombre:string
 descripcion:string

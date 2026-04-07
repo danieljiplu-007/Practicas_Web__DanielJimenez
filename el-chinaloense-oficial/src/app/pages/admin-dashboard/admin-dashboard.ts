@@ -24,10 +24,20 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   cargarDatos() {
+
     this.pedidosHoy = this.adminService.getPedidosHoy();
     this.ventasHoy = this.adminService.getVentasHoy();
-    this.platillos = this.adminService.getPlatillos();
+
+    this.adminService.getPlatillos((cantidad) => {
+
+      setTimeout(() => {
+        this.platillos = cantidad;
+      });
+
+    });
+
     this.pendientes = this.adminService.getPendientes();
+
   }
 
 }

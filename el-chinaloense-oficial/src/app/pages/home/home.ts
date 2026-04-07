@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductosService } from '../../services/productos.service';
 import { Producto } from '../../models/producto';
 import { PromoService } from '../../services/promo.service'
 import { Promo } from '../../models/promo'
-
 
 @Component({
   selector: 'app-home',
@@ -14,23 +13,29 @@ import { Promo } from '../../models/promo'
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  promo!:Promo
+  promo!: Promo
   productos: Producto[] = [];
 
   constructor(
-private productosService: ProductosService,
-private promoService:PromoService
-){
+    private productosService: ProductosService,
+    private promoService: PromoService
+  ) {}
 
-this.productos=this.productosService.getProductos()
+  ngOnInit(){
 
-this.promo=this.promoService.getPromo()
+    this.productosService.getProductos().subscribe(data => {
 
-}
+      setTimeout(() => {
+        this.productos = data
+      })
 
-  // SOLO muestra los populares
+    })
+
+    this.promo = this.promoService.getPromo()
+  }
+
   getPopulares() {
     return this.productos.filter(p => p.popular);
   }

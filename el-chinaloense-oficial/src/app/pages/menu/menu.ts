@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CartService } from '../../services/cart.service';
@@ -12,19 +12,14 @@ import { Producto, Extra } from '../../models/producto';
   templateUrl: './menu.html',
   styleUrls: ['./menu.css']
 })
-
-export class MenuComponent {
+export class MenuComponent implements OnInit {
 
   platillos: Producto[] = []
-
   categorias: string[] = []
-
   categoriaSeleccionada:string = ''
 
   platilloSeleccionado: Producto | null = null
-
   extrasSeleccionados: Extra[] = []
-
   ingredientesQuitados: string[] = []
 
   indexEditar:number | null = null
@@ -34,9 +29,17 @@ export class MenuComponent {
     private productosService: ProductosService,
     private router: Router,
     private route: ActivatedRoute
-  ){
+  ){}
 
-    this.platillos = this.productosService.getProductos()
+  ngOnInit(){
+
+    this.productosService.getProductos().subscribe(data => {
+
+      setTimeout(() => {
+        this.platillos = data
+      })
+
+    })
 
     this.categorias = [
       'Especialidades',
@@ -52,45 +55,37 @@ export class MenuComponent {
 
     this.categoriaSeleccionada = this.categorias[0]
 
-    // LEER CATEGORIA DESDE URL
-   this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
 
-  if(params['categoria']){
+      if(params['categoria']){
 
-    this.categoriaSeleccionada = params['categoria'];
+        this.categoriaSeleccionada = params['categoria'];
 
-    // esperar a que cargue el DOM
-    setTimeout(() => {
+        setTimeout(() => {
+          const seccion = document.getElementById('categorias');
+          if(seccion){
+            seccion.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 100);
 
-      const seccion = document.getElementById('categorias');
-
-      if(seccion){
-        seccion.scrollIntoView({ behavior: 'smooth' });
       }
 
-    }, 100);
+    })
 
-  }
-
-});
     const dataEditar = localStorage.getItem('editarProducto')
 
     if(dataEditar){
 
       const data = JSON.parse(dataEditar)
-
       const producto = data.producto
 
       this.seleccionarPlatillo(producto)
 
       this.extrasSeleccionados = producto.extrasSeleccionados || []
-
       this.ingredientesQuitados = producto.ingredientesQuitados || []
-
       this.indexEditar = data.index
 
       localStorage.removeItem('editarProducto')
-
     }
 
   }
@@ -170,23 +165,16 @@ export class MenuComponent {
     if(this.platilloSeleccionado){
 
       const productoFinal = {
-
         ...this.platilloSeleccionado,
-
         extrasSeleccionados:this.extrasSeleccionados,
-
         ingredientesQuitados:this.ingredientesQuitados,
-
         precioFinal:this.calcularPrecio()
-
       }
 
       if(this.indexEditar !== null){
 
         this.carritoService.items[this.indexEditar] = productoFinal
-
         localStorage.setItem('cart', JSON.stringify(this.carritoService.items))
-
         this.indexEditar = null
 
       }else{
@@ -196,7 +184,6 @@ export class MenuComponent {
       }
 
       this.cerrarDetalle()
-
       this.router.navigate(['/carrito'])
 
     }
