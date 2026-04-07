@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
@@ -11,7 +11,7 @@ import { PedidosService } from '../../services/pedidos.service';
   templateUrl: './carrito.html',
   styleUrls: ['./carrito.css']
 })
-export class CarritoComponent {
+export class CarritoComponent implements OnInit {
 
   items: any[] = [];
 
@@ -19,23 +19,30 @@ export class CarritoComponent {
     private cartService: CartService,
     private pedidosService: PedidosService,
     private router: Router
-  ){
+  ) {}
+
+  ngOnInit() {
+    this.cargarCarrito();
+  }
+
+  cargarCarrito() {
     this.items = this.cartService.getItems();
   }
 
   remove(index: number) {
     this.cartService.removeItem(index);
-    this.items = this.cartService.getItems();
+    this.cargarCarrito();
   }
 
-  editarProducto(item:any, index:number){
+  editarProducto(item: any, index: number) {
 
     const data = {
-      producto:item,
-      index:index
-    }
+      producto: item,
+      index: index
+    };
 
     localStorage.setItem('editarProducto', JSON.stringify(data));
+
     this.router.navigate(['/menu']);
   }
 
@@ -47,10 +54,10 @@ export class CarritoComponent {
     this.router.navigate(['/menu']);
   }
 
-  
-  realizarPedido(){
+  realizarPedido() {
 
-    if(this.items.length === 0){
+    // 🚨 Validación
+    if (this.items.length === 0) {
       alert("El carrito está vacío ❌");
       return;
     }
@@ -62,14 +69,18 @@ export class CarritoComponent {
       productos: this.items,
       total: this.total(),
       estado: 'pendiente',
-      fecha: new Date().toISOString() 
-    }
+      fecha: new Date().toISOString()
+    };
+
+    console.log("Enviando pedido 👉", pedido); // 👈 DEBUG
 
     this.pedidosService.guardarPedido(pedido).subscribe({
 
-      next: () => {
+      next: (res) => {
 
-        alert("Pedido enviado al restaurante ✅🔥")
+        console.log("Respuesta backend ✅", res);
+
+        alert("Pedido enviado al restaurante ✅🔥");
 
         this.cartService.clearCart();
         this.items = [];
@@ -78,7 +89,7 @@ export class CarritoComponent {
       },
 
       error: (err) => {
-        console.error(err);
+        console.error("Error backend ❌", err);
         alert("Error al enviar pedido ❌");
       }
 
