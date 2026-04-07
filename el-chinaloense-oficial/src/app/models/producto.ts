@@ -1,22 +1,20 @@
-export interface Extra{
-nombre:string
-precio:number
+export interface Extra {
+  nombre: string
+  precio: number
 }
 
-export interface Producto{
+export interface Producto {
 
-_id?: string   // 🔥 AGREGADO PARA MONGO
+  _id?: string   // 🔥 Mongo ID
 
-id:number
-nombre:string
-descripcion:string
-precio:number
-imagen:string
-categoria:string
+  nombre: string
+  descripcion: string
+  precio: number
+  imagen: string
+  categoria: string
 
-ingredientes:string[]
-extras:Extra[]
+  ingredientes: string[]
+  extras: Extra[]
 
-popular?:boolean
-
+  popular?: boolean
 }
