@@ -12,6 +12,7 @@ client = MongoClient(os.environ.get("MONGO_URI"))
 db = client["chinaloenseDB"]
 collection = db["platillos"]
 collection_pedidos = db["pedidos"]
+collection_usuarios = db["usuarios"]
 
 @app.route("/")
 def home():
@@ -19,7 +20,7 @@ def home():
 
 
 # =========================
-# 🔹 PLATILLOS
+# PLATILLOS
 # =========================
 
 @app.route("/platillos", methods=["GET"])
@@ -88,7 +89,7 @@ def eliminar_platillo(id):
 
 
 # =========================
-# 🔥 PEDIDOS
+# PEDIDOS
 # =========================
 
 @app.route("/pedidos", methods=["POST"])
@@ -127,7 +128,6 @@ def obtener_pedidos():
         return jsonify({"error": str(e)}), 500
 
 
-# 🔥 NUEVO — ACTUALIZAR ESTADO DEL PEDIDO
 @app.route("/pedidos/<id>", methods=["PUT"])
 def actualizar_estado_pedido(id):
     try:
@@ -148,6 +148,59 @@ def actualizar_estado_pedido(id):
 
     except Exception as e:
         print("ERROR PUT PEDIDO:", e)
+        return jsonify({"error": str(e)}), 500
+
+
+# =========================
+# USUARIOS (LOGIN / REGISTRO)
+# =========================
+
+@app.route("/registro", methods=["POST"])
+def registro():
+    try:
+        data = request.get_json()
+
+        if not data:
+            return jsonify({"error": "Datos vacíos"}), 400
+
+        usuario_existente = collection_usuarios.find_one({
+            "correo": data.get("correo")
+        })
+
+        if usuario_existente:
+            return jsonify({"error": "El usuario ya existe"}), 400
+
+        collection_usuarios.insert_one(data)
+
+        return jsonify({"mensaje": "Usuario registrado"}), 201
+
+    except Exception as e:
+        print("ERROR REGISTRO:", e)
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    try:
+        data = request.get_json()
+
+        usuario = collection_usuarios.find_one({
+            "correo": data.get("correo"),
+            "password": data.get("password")
+        })
+
+        if not usuario:
+            return jsonify({"error": "Credenciales incorrectas"}), 401
+
+        usuario["_id"] = str(usuario["_id"])
+
+        return jsonify({
+            "mensaje": "Login exitoso",
+            "usuario": usuario
+        }), 200
+
+    except Exception as e:
+        print("ERROR LOGIN:", e)
         return jsonify({"error": str(e)}), 500
 
 
