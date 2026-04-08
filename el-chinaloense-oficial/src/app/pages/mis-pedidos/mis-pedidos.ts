@@ -17,8 +17,16 @@ constructor(private pedidosService:PedidosService){}
 
 ngOnInit(){
 
+const usuario = JSON.parse(localStorage.getItem('usuario') || 'null');
+
 this.pedidosService.getPedidos().subscribe(data => {
-  this.pedidos = data;
+
+  if(usuario?.correo === 'admin@admin.com'){
+    this.pedidos = data;
+  } else {
+    this.pedidos = data.filter((p:any) => p.usuarioId === usuario?._id);
+  }
+
 });
 
 }

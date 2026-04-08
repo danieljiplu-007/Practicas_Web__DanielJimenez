@@ -1,55 +1,21 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private usuarioActual: any = null;
+  private API = 'https://elchinaloense-backend.onrender.com';
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  login(email: string, password: string){
+  login(data:any){
+    return this.http.post(`${this.API}/login`, data);
+  }
 
-    // ADMIN
-    if(email === 'admin@chinaloense.com' && password === 'admin123'){
-
-      this.usuarioActual = {
-        nombre: 'Administrador',
-        email: email,
-        rol: 'admin'
-      };
-
-      localStorage.setItem('usuario', JSON.stringify(this.usuarioActual));
-
-      return 'admin';
-    }
-
-    // BUSCAR USUARIOS REGISTRADOS
-    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-
-    const usuarioEncontrado = usuarios.find((u:any) =>
-      u.email === email && u.password === password
-    );
-
-    if(usuarioEncontrado){
-
-      this.usuarioActual = {
-        nombre: usuarioEncontrado.nombre,
-        email: usuarioEncontrado.email,
-        rol: 'cliente'
-      };
-
-      localStorage.setItem('usuario', JSON.stringify(this.usuarioActual));
-
-      return 'cliente';
-    }
-
-    // SI NO COINCIDE
-    alert('Correo o contraseña incorrectos');
-
-    return null;
-
+  registro(data:any){
+    return this.http.post(`${this.API}/registro`, data);
   }
 
   getUsuario(){
@@ -58,7 +24,7 @@ export class AuthService {
 
   esAdmin(){
     const usuario = this.getUsuario();
-    return usuario?.rol === 'admin';
+    return usuario?.correo === 'admin@admin.com';
   }
 
   estaLogueado(){

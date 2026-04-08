@@ -56,7 +56,6 @@ export class CarritoComponent implements OnInit {
 
   realizarPedido() {
 
-    // 🚨 Validación
     if (this.items.length === 0) {
       alert("El carrito está vacío ❌");
       return;
@@ -66,19 +65,16 @@ export class CarritoComponent implements OnInit {
 
     const pedido = {
       cliente: usuario?.nombre || 'Cliente',
+      usuarioId: usuario?._id || null,
       productos: this.items,
       total: this.total(),
       estado: 'pendiente',
       fecha: new Date().toISOString()
     };
 
-    console.log("Enviando pedido 👉", pedido); // 👈 DEBUG
-
     this.pedidosService.guardarPedido(pedido).subscribe({
 
-      next: (res) => {
-
-        console.log("Respuesta backend ✅", res);
+      next: () => {
 
         alert("Pedido enviado al restaurante ✅🔥");
 
@@ -88,8 +84,7 @@ export class CarritoComponent implements OnInit {
         this.router.navigate(['/mis-pedidos']);
       },
 
-      error: (err) => {
-        console.error("Error backend ❌", err);
+      error: () => {
         alert("Error al enviar pedido ❌");
       }
 

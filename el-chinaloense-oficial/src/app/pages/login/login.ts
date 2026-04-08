@@ -23,19 +23,30 @@ export class LoginComponent {
 
   login(){
 
-    const rol = this.authService.login(this.email, this.password);
+    const data = {
+      correo: this.email,
+      password: this.password
+    };
 
-    // ADMIN
-    if(rol === 'admin'){
-      this.router.navigate(['/admin']);
-    }
+    this.authService.login(data).subscribe({
 
-    // CLIENTE
-    else if(rol === 'cliente'){
-      this.router.navigate(['/']);
-    }
+      next: (res:any) => {
 
-    // SI ES NULL NO HACE NADA (YA SE MOSTRÓ ALERT EN EL SERVICE)
+        localStorage.setItem('usuario', JSON.stringify(res.usuario));
+
+        if(res.usuario.correo === 'admin@admin.com'){
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/']);
+        }
+
+      },
+
+      error: () => {
+        alert("Credenciales incorrectas ❌");
+      }
+
+    });
 
   }
 

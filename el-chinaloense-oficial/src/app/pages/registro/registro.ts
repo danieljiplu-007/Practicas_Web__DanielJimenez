@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-registro',
@@ -16,46 +17,41 @@ export class RegistroComponent {
   email = '';
   password = '';
 
-  constructor(private router: Router){}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ){}
 
   registrar(){
 
-    // VALIDAR CAMPOS VACÍOS
     if(!this.nombre || !this.email || !this.password){
       alert('Todos los campos son obligatorios');
       return;
     }
 
-    // VALIDAR LONGITUD DE CONTRASEÑA
     if(this.password.length < 6){
       alert('La contraseña debe tener al menos 6 caracteres');
       return;
     }
 
-    let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-
-    // VALIDAR CORREO REPETIDO
-    const existe = usuarios.find((u:any) => u.email === this.email);
-
-    if(existe){
-      alert('Este correo ya está registrado');
-      return;
-    }
-
-    const nuevoUsuario = {
+    const data = {
       nombre: this.nombre,
-      email: this.email,
-      password: this.password,
-      rol: 'cliente'
+      correo: this.email,
+      password: this.password
     };
 
-    usuarios.push(nuevoUsuario);
+    this.authService.registro(data).subscribe({
 
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+      next: () => {
+        alert('Cuenta creada correctamente ✅');
+        this.router.navigate(['/login']);
+      },
 
-    alert('Cuenta creada correctamente');
+      error: (err) => {
+        alert(err.error?.error || 'Error al registrar ❌');
+      }
 
-    this.router.navigate(['/login']);
+    });
 
   }
 
