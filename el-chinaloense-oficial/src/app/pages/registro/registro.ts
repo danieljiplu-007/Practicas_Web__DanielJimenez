@@ -47,8 +47,8 @@ export class RegistroComponent {
         this.router.navigate(['/login']);
       },
 
-      error: (err) => {
-        alert(err.error?.error || 'Error al registrar ❌');
+      error: (err: any) => {
+        alert(err?.error?.error || 'Error al registrar ❌');
       }
 
     });

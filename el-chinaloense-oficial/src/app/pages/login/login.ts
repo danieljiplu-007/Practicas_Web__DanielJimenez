@@ -23,27 +23,18 @@ export class LoginComponent {
 
   login(){
 
-    const data = {
-      correo: this.email,
-      password: this.password
-    };
+    if(!this.email || !this.password){
+      alert("Todos los campos son obligatorios");
+      return;
+    }
 
-    this.authService.login(data).subscribe({
+    this.authService.login(this.email, this.password, (rol) => {
 
-      next: (res:any) => {
-
-        localStorage.setItem('usuario', JSON.stringify(res.usuario));
-
-        if(res.usuario.correo === 'admin@admin.com'){
-          this.router.navigate(['/admin']);
-        } else {
-          this.router.navigate(['/']);
-        }
-
-      },
-
-      error: () => {
-        alert("Credenciales incorrectas ❌");
+      if(rol === 'admin'){
+        this.router.navigate(['/admin']);
+      }
+      else if(rol === 'cliente'){
+        this.router.navigate(['/']);
       }
 
     });

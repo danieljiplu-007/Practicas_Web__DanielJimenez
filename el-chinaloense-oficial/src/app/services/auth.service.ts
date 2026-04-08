@@ -10,11 +10,41 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(data:any){
-    return this.http.post(`${this.API}/login`, data);
+  login(email: string, password: string, callback: (rol:any)=>void){
+
+    this.http.post(`${this.API}/login`, {
+      correo: email,
+      password: password
+    }).subscribe((res:any) => {
+
+      const usuario = res.usuario;
+
+      let rol = 'cliente';
+
+      if(usuario.correo === 'admin@admin.com'){
+        rol = 'admin';
+      }
+
+      const usuarioFinal = {
+        nombre: usuario.nombre,
+        email: usuario.correo,
+        rol: rol
+      };
+
+      localStorage.setItem('usuario', JSON.stringify(usuarioFinal));
+
+      callback(rol);
+
+    }, () => {
+
+      alert('Correo o contraseña incorrectos');
+      callback(null);
+
+    });
+
   }
 
-  registro(data:any){
+  registro(data: any){
     return this.http.post(`${this.API}/registro`, data);
   }
 
@@ -24,7 +54,7 @@ export class AuthService {
 
   esAdmin(){
     const usuario = this.getUsuario();
-    return usuario?.correo === 'admin@admin.com';
+    return usuario?.rol === 'admin';
   }
 
   estaLogueado(){
