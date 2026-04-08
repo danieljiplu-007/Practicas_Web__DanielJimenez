@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PedidosService } from '../../services/pedidos.service';
 
@@ -9,36 +9,40 @@ import { PedidosService } from '../../services/pedidos.service';
   templateUrl: './admin-pedidos.html',
   styleUrls: ['./admin-pedidos.css']
 })
-export class AdminPedidosComponent {
+export class AdminPedidosComponent implements OnInit {
 
-  pedidos: any[] = [];
+  pedidos:any[] = [];
 
-  constructor(private pedidosService: PedidosService) {}
+  constructor(private pedidosService: PedidosService){}
 
-  ngOnInit() {
+  ngOnInit(){
     this.cargarPedidos();
   }
 
-  cargarPedidos() {
+  cargarPedidos(){
 
-    this.pedidosService.getPedidos().subscribe({
-      next: (data) => {
+    this.pedidosService.getPedidos().subscribe(data => {
 
-        this.pedidos = data
-          .filter(p => p.estado !== 'entregado')
-          .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
+      this.pedidos = data
+        .filter((p:any) => p.estado !== 'entregado')
+        .sort((a:any, b:any) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
 
-      },
-      error: (err) => console.error('Error cargando pedidos:', err)
     });
 
   }
 
-  cambiarEstado(id: string, estado: string) {
+  cambiarEstado(id:string, estado:string){
 
     this.pedidosService.actualizarEstado(id, estado).subscribe({
-      next: () => this.cargarPedidos(),
-      error: (err) => console.error('Error actualizando estado:', err)
+
+      next: () => {
+        this.cargarPedidos();
+      },
+
+      error: (err) => {
+        console.error(err);
+      }
+
     });
 
   }

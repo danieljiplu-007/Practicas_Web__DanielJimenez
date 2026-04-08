@@ -2,6 +2,19 @@
 
 <h1>💰 Ventas del restaurante</h1>
 
+<!-- 🔥 GRÁFICA -->
+<canvas id="graficaVentas"></canvas>
+
+<br>
+
+<div class="filtros">
+
+<button (click)="cambiarFiltro('hoy')">Hoy</button>
+<button (click)="cambiarFiltro('semana')">Semana</button>
+<button (click)="cambiarFiltro('mes')">Mes</button>
+
+</div>
+
 <div class="tabla-container">
 
 <table>
@@ -24,7 +37,7 @@
 $ {{ venta.total }}
 </td>
 
-<td>{{ venta.fecha }}</td>
+<td>{{ venta.fecha | date:'short' }}</td>
 
 </tr>
 
